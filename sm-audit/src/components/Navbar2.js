@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import {
     AppBar,
     Toolbar,
@@ -7,7 +7,6 @@ import {
     Tab,
 } from '@mui/material';
 import logo from '../images/bit-logo.png'
-
 const commonTab = {
     marginLeft: '20px',
     marginRight: '20px',
@@ -29,8 +28,10 @@ const highlightTab = {
 }
 
 export const Navbar2 = ({isLoggedIn, setLoggedIn }) => {
+    const navigate = useNavigate()
     const handleLogout = () =>{
         setLoggedIn(false)
+        navigate('/login')// auto redirect to login page when click on logout 
     }
     return (
         <AppBar
@@ -58,6 +59,7 @@ export const Navbar2 = ({isLoggedIn, setLoggedIn }) => {
                     {isLoggedIn ? (
                         <>
                             <Link to='/audit-system'><Tab label="Audit System" sx={commonTab}></Tab></Link>
+                            <Link to='/report-history'><Tab label="Report History" sx={commonTab}></Tab></Link>
                             <Tab label="Account" sx={commonTab}></Tab>
                             <Tab label="Logout" sx={commonTab}  style={highlightTab} onClick={handleLogout}></Tab>
                         </>

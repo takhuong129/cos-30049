@@ -6,6 +6,7 @@ import {Login} from './components/Login.js'
 import {Signup} from './components/Signup.js'
 import {Navbar2} from './components/Navbar2.js';
 import {Audit} from './components/Audit.js'
+import {Report} from './components/Report.js'
 import { Footer } from './components/footer.js';
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -17,6 +18,7 @@ function App() {
             <Routes>
               <Route path='/' element={<Home/>}></Route>
               <Route path='/audit-system' element={<Audit/>}></Route>
+              <Route path='/report-history' element={<Report/>}></Route>
               <Route path='/login' element={<Login setLoggedIn={setIsLoggedIn}/>}></Route>
               <Route path='/signup' element={<Signup/>}></Route>
             </Routes>
