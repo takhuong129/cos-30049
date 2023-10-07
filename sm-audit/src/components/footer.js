@@ -1,3 +1,6 @@
+/*
+Ta Thanh Khuong: 103526664
+*/
 import React from 'react';
 import { Typography } from '@mui/material';
 
@@ -5,7 +8,7 @@ const footerStyle = {
     position: 'fixed',
     bottom: 0,
     width: '100%',
-    backgroundColor: '#333', // Adjust the background color as needed
+    backgroundColor: '#333', 
     color: 'white',
     padding: '20px 0',
     textAlign: 'center',

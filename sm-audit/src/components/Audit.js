@@ -1,27 +1,34 @@
+/*
+Ta Thanh Khuong: 103526664
+*/
 import React, { useState } from 'react';
 import { 
-    Container,
-    Grid,
-    Box,
+  Container,
+  Grid,
+  Box,
 } from '@mui/material';
 import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
-
+import { AnalysisDs } from './AnalysisDs';
 export const Audit = () => {
   const [selectedFile, setSelectedFile] = useState(null);
+  const [showPopup, setShowPopup] = useState(false);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     setSelectedFile(file);
+    setShowPopup(true);
   };
 
   return (
     <Container style={{ marginTop: '15rem' }}>
-     <h1 style={{display:'flex',justifyContent:'center'}}>Upload your smart contract here</h1>
+      <h1 style={{ display: 'flex', justifyContent: 'center' }}>
+        Upload your smart contract here
+      </h1>
       <Box
         style={{
           padding: '2.5rem',
-          width: '60%', // Adjust the width as needed
-          margin: '0 auto', // Center the div horizontally
+          width: '60%',
+          margin: '0 auto',
           border: '2px dashed black',
         }}
       >
@@ -50,11 +57,11 @@ export const Audit = () => {
               <div
                 style={{
                   border: '1px solid #ccc',
-                  borderRadius:'10px',
+                  borderRadius: '10px',
                   padding: '1rem 2rem',
-                  fontWeight:'600',
+                  fontWeight: '600',
                   cursor: 'pointer',
-                  color:'white',
+                  color: 'white',
                   backgroundColor: '#023020',
                 }}
               >
@@ -64,6 +71,36 @@ export const Audit = () => {
           </Grid>
         </Grid>
       </Box>
+
+      {/* Popup */}
+      {showPopup && (
+        <div
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            zIndex: 999,
+          }}
+        >
+          <div
+            style={{
+              backgroundColor: 'white',
+              padding: '2rem',
+              borderRadius: '40px',
+              boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.5)',
+              border:'2px solid #023020'
+            }}
+          >
+            <AnalysisDs/>
+          </div>
+        </div>
+      )}
     </Container>
   );
 };

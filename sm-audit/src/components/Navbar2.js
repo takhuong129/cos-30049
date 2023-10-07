@@ -1,3 +1,6 @@
+/*
+Ta Thanh Khuong: 103526664
+*/
 import React from "react";
 import { Link, useNavigate } from 'react-router-dom'
 import {
@@ -60,7 +63,7 @@ export const Navbar2 = ({isLoggedIn, setLoggedIn }) => {
                         <>
                             <Link to='/audit-system'><Tab label="Audit System" sx={commonTab}></Tab></Link>
                             <Link to='/report-history'><Tab label="Report History" sx={commonTab}></Tab></Link>
-                            <Tab label="Account" sx={commonTab}></Tab>
+                            <Link to='/account'><Tab label="Account" sx={commonTab}></Tab></Link>
                             <Tab label="Logout" sx={commonTab}  style={highlightTab} onClick={handleLogout}></Tab>
                         </>
                     ) : (
