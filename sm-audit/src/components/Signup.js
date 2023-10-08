@@ -18,6 +18,7 @@ import {
   InputAdornment, 
   IconButton
 } from '@mui/material';
+import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import {validateUser, validatePassword, validateEmail, validatePhone} from '../components/Validation.js';
 
@@ -36,6 +37,9 @@ export const Signup = () => {
   const [errorPhone, setErrorPhone] = useState('');
   
   const [showPassword, setShowPassword] = useState(false);
+
+  const [showPopup, setShowPopup] = useState(false);
+
 
   const handleUsernameChange = (event) => {
     setUsername(event.target.value);
@@ -78,6 +82,9 @@ export const Signup = () => {
     let validPhone = validatePhone(phoneNumber);
     setErrorPhone(validPhone);
     if (validUsername === '' && validPassword === '' && validEmail === '' && validPhone === '') {
+      //show popup
+      setShowPopup(true);
+
       const registrationDataClient = {
           password: password1,
           email: email,
@@ -215,6 +222,46 @@ export const Signup = () => {
           </Grid>
         </Grid>
       </div>
+      {showPopup && (
+          <div
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              backgroundColor: 'rgba(0, 0, 0, 0.5)',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              zIndex: 999,
+            }}
+          >
+            <div
+              style={{
+                backgroundColor: 'white',
+                padding: '2rem',
+                borderRadius: '40px',
+                boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.5)',
+                border: '2px solid #023020',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center', 
+              }}
+            >
+              <h2 style={{color:'#023020'}}>Signup Successful!</h2>
+              <CheckCircleOutlinedIcon style={{ fontSize: '4rem', color:'Green' }} />
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => setShowPopup(false)}
+                style={{ marginTop: '1rem' }}
+              >
+                Close
+              </Button>
+            </div>
+          </div>
+        )}
     </Container>
   );
 };
