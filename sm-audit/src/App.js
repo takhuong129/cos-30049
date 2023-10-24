@@ -9,6 +9,8 @@ import {Audit} from './components/Audit.js'
 import { Account } from './components/Account.js';
 import {Report} from './components/Report.js'
 import { Footer } from './components/footer.js';
+/**Remove after test */
+import { TestFirebase } from './components/TestFirsebase';
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userData, setUserData] = useState(null);
@@ -24,6 +26,8 @@ function App() {
               <Route path='/account' element={<Account  userData={userData}/>}></Route>
               <Route path='/login' element={<Login setLoggedIn={setIsLoggedIn} setUserData={setUserData}/>}></Route>
               <Route path='/signup' element={<Signup/>}></Route>
+
+              <Route path='/test-firebase' element={<TestFirebase/>}></Route>
             </Routes>
           </Router>
         <Footer/>

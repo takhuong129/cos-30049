@@ -68,6 +68,7 @@ export const Navbar2 = ({isLoggedIn, setLoggedIn }) => {
                         </>
                     ) : (
                         <>
+                            <Link to='/test-firebase'><Tab label="Test Firebase" sx={commonTab}></Tab></Link>
                             <Link to='/signup'><Tab label="Sign up" sx={commonTab}></Tab></Link>
                             <Link to='/login'><Tab label="Log in" sx={commonTab} style={highlightTab}></Tab></Link>
                         </>
