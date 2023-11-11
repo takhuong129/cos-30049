@@ -63,8 +63,8 @@ export const Login = ({ setLoggedIn, setUserData }) => {
         marginTop: '20rem', 
         background: '#9AACA6',
         borderRadius: '40px',
-        width: '50%', // Adjust the width as needed
-        margin: ' 20rem auto', // Center the div horizontally
+        width: '50%', 
+        margin: ' 20rem auto', 
       }}>
         <Grid
           container

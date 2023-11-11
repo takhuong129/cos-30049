@@ -90,7 +90,7 @@ export const Audit = () => {
         >
           <div
             style={{
-              backgroundColor: 'white',
+              backgroundColor: '#F2F0E3',
               padding: '2rem',
               borderRadius: '40px',
               boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.5)',

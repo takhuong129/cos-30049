@@ -1,6 +1,3 @@
-/*
-Ta Thanh Khuong: 103526664
-*/
 import React, { useState } from 'react';
 import {
   Container,
@@ -11,11 +8,24 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  TablePagination,
   Grid,
 } from '@mui/material';
 import { tableCellClasses } from '@mui/material/TableCell';
 
 export const Report = () => {
+  const [showPopup, setShowPopup] = useState(false);
+  const [selectedRow, setSelectedRow] = useState(null);
+
+  const handleClick = (row) => {
+    setSelectedRow(row);
+    setShowPopup(true);
+  };
+
+  const handleClose = () => {
+    setSelectedRow(null);
+    setShowPopup(false);
+  };
 
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -26,7 +36,7 @@ export const Report = () => {
       fontSize: 14,
     },
   }));
-  
+
   const StyledTableRow = styled(TableRow)(({ theme }) => ({
     '&:nth-of-type(odd)': {
       backgroundColor: theme.palette.action.hover,
@@ -36,85 +46,188 @@ export const Report = () => {
       border: 0,
     },
   }));
-  
-  function createData(id,filename, category, description, severity, recommendation) {
-    return { id, filename, category, description, severity, recommendation };
+
+  function createData(id, date, filename, vulnerabilitiesData) {
+    return { id, date, filename, vulnerabilitiesData };
   }
+
   const rows = [
-    createData(
-      1,
-      'funding-contract.sol', 
-      'Reentrancy Attack', 
-      'This vulnerability allows an attacker to repeatedly call a vulnerable contract before it finishes processing, potentially draining its funds.', 
-      'High', 
-      'Implement proper access control and use the "checks-effects-interactions" pattern to minimize reentrancy risk.'),
-    createData(
-      2,
-      'token_contract.sol', 
-      'Integer Overflow/Underflow', 
-      'This vulnerability arises in the token contract due to improper validation of user inputs, allowing attackers to create an overflow or underflow of token balances.', 
-      'High', 
-      'Use SafeMath library or similar methods to prevent integer overflow and underflow vulnerabilities in the contract.'),
-    createData(
-      3,
-      'admin_control.sol', 
-      'Access Control Issues', 
-      'This vulnerability occurs in the admin_control contract, where insufficient access control mechanisms allow unauthorized users to gain administrative privileges.', 
-      'Medium', 
-      'Implement role-based access control (RBAC) to restrict administrative functions to authorized users only'),
-    createData(
-      4,
-      'auction_contract.sol', 
-      'Uninitialized State Variables', 
-      'This vulnerability arises in the auction contract when certain state variables are not initialized, leading to unexpected behaviors during auctions.', 
-      'Low', 
-      'Ensure that all state variables are properly initialized during contract deployment or auction initialization.'),
-    createData(
-      5,
-      'lottery_contract.sol', 
-      'Timestamp Dependence', 
-      'This vulnerability exists in the lottery contract, which relies on block timestamps for determining winners, making it susceptible to manipulation by miners.', 
-      'Medium', 
-      'Use external time oracles to fetch timestamps instead of relying solely on block timestamps.'),
+    createData(1, '2023-11-11', 'example_file.sol', [
+      {
+        confidence: 'High',
+        description: 'SQL Injection',
+        impact: 'Critical',
+        recommendation: 'Update database input validation',
+        vulnerability_type:'das',
+        vulnerability_code:[
+          { code_desc: 'Code Description 1', location: 'Location 1' },
+          { code_desc: 'Code Description 2', location: 'Location 2' },
+        ],
+      },
+    ]),
+    createData(2, '2023-11-12', 'a.sol', [
+      {
+        confidence: 'Medium',
+        description: 'Cross-Site Scripting (XSS)',
+        impact: 'High',
+        recommendation: 'Implement proper input validation and output encoding',
+        vulnerability_type:'das',
+        vulnerability_code:[
+          { code_desc: 'Code Description 1', location: 'Location 1' },
+          { code_desc: 'Code Description 2', location: 'Location 2' },
+        ],
+      },
+      // Add more vulnerabilities for 'a.sol' if needed
+    ]),
+    createData(3, '2023-11-12', 'b.sol', [
+      {
+        confidence: 'Low',
+        description: 'Weak Password Policy',
+        impact: 'Medium',
+        recommendation: 'Enforce strong password policies',
+        vulnerability_type:'das',
+        vulnerability_code:[
+          { code_desc: 'Code Description 1', location: 'Location 1' },
+          { code_desc: 'Code Description 2', location: 'Location 2' },
+        ],
+      },
+      {
+        confidence: 'Medium',
+        description: 'Cross-Site Scripting (XSS)',
+        impact: 'High',
+        recommendation: 'Implement proper input validation and output encoding',
+        vulnerability_type:'avc',
+        vulnerability_code: [
+          { code_desc: '[HighRiskTransaction.owner](smart-contract/transaction.sol#L5) should be immutable', 
+            location: 'Line 5' 
+          },
+          { code_desc: '[HighRiskTransaction.owner](smart-contract/transaction.sol#L5) should be immutable', 
+            location: 'Line 5' 
+          },
+        ],
+      }, 
+      {
+        confidence: 'Medium',
+        description: 'Cross-Site Scripting (XSS)',
+        impact: 'High',
+        recommendation: 'Implement proper input validation and output encoding',
+        vulnerability_type:'avc',
+        vulnerability_code: [
+          { code_desc: '[HighRiskTransaction.owner](smart-contract/transaction.sol#L5) should be immutable', 
+            location: 'Line 5' 
+          },
+          { code_desc: '[HighRiskTransaction.owner](smart-contract/transaction.sol#L5) should be immutable', 
+            location: 'Line 5' 
+          },
+        ],
+      }
+      // Add more vulnerabilities for 'b.sol' if needed
+    ]),
   ];
+
   return (
     <Container>
-    <div style={{ 
-      padding: '2.5rem',  
-      borderRadius: '40px',
-      width: '100%', 
-      margin: ' 10rem auto',
-    }}>
-      <Grid xs={12}><h1 style={{textAlign:'center', marginBottom:'4rem'}}>Report History</h1></Grid>
-       <TableContainer>
-      <Table sx={{ minWidth: 700 }} aria-label="customized table">
-        <TableHead>
-          <TableRow>
-          <StyledTableCell>ID</StyledTableCell>
-            <StyledTableCell align="center">Filename</StyledTableCell>
-            <StyledTableCell align="center">Category</StyledTableCell>
-            <StyledTableCell align="center">Severity</StyledTableCell>
-            <StyledTableCell align="center">Description</StyledTableCell>
-            <StyledTableCell align="center">Recommendation</StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <StyledTableRow key={row.id}>
-              <StyledTableCell component="th" scope="row">
-                {row.id}
-              </StyledTableCell>
-                <StyledTableCell align="center">{row.filename}</StyledTableCell>
-                <StyledTableCell align="center">{row.category}</StyledTableCell>
-                <StyledTableCell align="center">{row.severity}</StyledTableCell>
-                <StyledTableCell align="center">{row.description}</StyledTableCell>
-                <StyledTableCell align="center">{row.recommendation}</StyledTableCell>
-            </StyledTableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-    </div>
-  </Container>
+      <div
+        style={{
+          padding: '2.5rem',
+          borderRadius: '40px',
+          width: '100%',
+          margin: ' 10rem auto',
+        }}
+      >
+        <Grid xs={12}>
+          <h1 style={{ textAlign: 'center', marginBottom: '4rem' }}>Report History</h1>
+        </Grid>
+        <TableContainer>
+          <Table sx={{ minWidth: 700 }} aria-label="customized table">
+            <TableHead>
+              <TableRow>
+                <StyledTableCell>ID</StyledTableCell>
+                <StyledTableCell align="center">Date</StyledTableCell>
+                <StyledTableCell align="center">Filename</StyledTableCell>
+                <StyledTableCell align="center">Vulnerabilities</StyledTableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rows.map((row) => (
+                <StyledTableRow key={row.id}>
+                  <StyledTableCell component="th" scope="row">
+                    {row.id}
+                  </StyledTableCell>
+                  <StyledTableCell align="center">{row.date}</StyledTableCell>
+                  <StyledTableCell align="center">{row.filename}</StyledTableCell>
+                  <StyledTableCell align="center">
+                    <button onClick={() => handleClick(row)}>View Details</button>
+                  </StyledTableCell>
+                </StyledTableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={rows.length}
+          rowsPerPage={5}
+          page={0}
+          onPageChange={() => {}}
+          onRowsPerPageChange={() => {}}
+        />
+
+        {/* Custom Popup for showing details */}
+        {showPopup && (
+          <div
+            style={{
+            
+              width: '100%',
+              height: '100%',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              zIndex: 999,
+            }}
+          >
+            <div
+              style={{
+                backgroundColor: 'white',
+                padding: '2rem',
+                borderRadius: '40px',
+                boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.5)',
+                border: '2px solid #023020',
+                display: 'flex',
+                flexDirection: 'column', 
+                alignItems: 'center', 
+              }}
+            >
+              {/* Render your custom popup content here */}
+              {selectedRow && (
+                <ul style={{ marginBottom: '1rem' }}>
+                  {selectedRow.vulnerabilitiesData.map((vulnerability, index) => (
+                    <li key={index} style={{ marginBottom: '2rem' }}>
+                      <strong>Confidence:</strong> {vulnerability.confidence}<br />
+                      <strong>Description:</strong> {vulnerability.description}<br />
+                      <strong>Impact:</strong> {vulnerability.impact}<br />
+                      <strong>Recommendation:</strong> {vulnerability.recommendation}<br />
+                      <strong>vulnerability type:</strong> {vulnerability.vulnerability_type}<br />
+                      <strong style={{color:'red'}}>Vulnerability Code:</strong><br />
+                      {vulnerability.vulnerability_code.map((code, codeIndex) => (
+                      <ul key={codeIndex}>
+                        <strong>Code desc:</strong> {code.code_desc}<br />
+                        <strong>Location:</strong> {code.location}<br />
+                      </ul>
+                    ))}
+                    </li>
+                  ))}
+                </ul>
+              )}
+
+              {/* Add a button or any element to close the popup */}
+              <button onClick={handleClose} style={{ background: '#023020', color: 'white', padding: '1rem 3rem', fontSize: '1.rem', marginTop: 'auto' ,borderRadius:'40px' }}>Close</button>
+            </div>
+          </div>
+        )}
+
+      </div>
+    </Container>
   );
 };
