@@ -16,6 +16,8 @@ import { tableCellClasses } from '@mui/material/TableCell';
 export const Report = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5); // Number of rows per page
 
   const handleClick = (row) => {
     setSelectedRow(row);
@@ -25,6 +27,15 @@ export const Report = () => {
   const handleClose = () => {
     setSelectedRow(null);
     setShowPopup(false);
+  };
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
   };
 
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -123,6 +134,58 @@ export const Report = () => {
       }
       // Add more vulnerabilities for 'b.sol' if needed
     ]),
+    createData(4, '2023-11-11', 'example_file.sol', [
+      {
+        confidence: 'High',
+        description: 'SQL Injection',
+        impact: 'Critical',
+        recommendation: 'Update database input validation',
+        vulnerability_type:'das',
+        vulnerability_code:[
+          { code_desc: 'Code Description 1', location: 'Location 1' },
+          { code_desc: 'Code Description 2', location: 'Location 2' },
+        ],
+      },
+    ]),
+    createData(5, '2023-11-11', 'example_file.sol', [
+      {
+        confidence: 'High',
+        description: 'SQL Injection',
+        impact: 'Critical',
+        recommendation: 'Update database input validation',
+        vulnerability_type:'das',
+        vulnerability_code:[
+          { code_desc: 'Code Description 1', location: 'Location 1' },
+          { code_desc: 'Code Description 2', location: 'Location 2' },
+        ],
+      },
+    ]),
+    createData(6, '2023-11-11', 'example_file.sol', [
+      {
+        confidence: 'High',
+        description: 'SQL Injection',
+        impact: 'Critical',
+        recommendation: 'Update database input validation',
+        vulnerability_type:'das',
+        vulnerability_code:[
+          { code_desc: 'Code Description 1', location: 'Location 1' },
+          { code_desc: 'Code Description 2', location: 'Location 2' },
+        ],
+      },
+    ]),
+    createData(7, '2023-11-11', 'example_file.sol', [
+      {
+        confidence: 'High',
+        description: 'SQL Injection',
+        impact: 'Critical',
+        recommendation: 'Update database input validation',
+        vulnerability_type:'das',
+        vulnerability_code:[
+          { code_desc: 'Code Description 1', location: 'Location 1' },
+          { code_desc: 'Code Description 2', location: 'Location 2' },
+        ],
+      },
+    ]),
   ];
 
   return (
@@ -149,7 +212,7 @@ export const Report = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows.map((row) => (
+              {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
                 <StyledTableRow key={row.id}>
                   <StyledTableCell component="th" scope="row">
                     {row.id}
@@ -164,21 +227,21 @@ export const Report = () => {
             </TableBody>
           </Table>
         </TableContainer>
+
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
           count={rows.length}
-          rowsPerPage={5}
-          page={0}
-          onPageChange={() => {}}
-          onRowsPerPageChange={() => {}}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
         />
 
         {/* Custom Popup for showing details */}
         {showPopup && (
           <div
             style={{
-            
               width: '100%',
               height: '100%',
               display: 'flex',
@@ -195,8 +258,8 @@ export const Report = () => {
                 boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.5)',
                 border: '2px solid #023020',
                 display: 'flex',
-                flexDirection: 'column', 
-                alignItems: 'center', 
+                flexDirection: 'column',
+                alignItems: 'center',
               }}
             >
               {/* Render your custom popup content here */}
@@ -204,29 +267,42 @@ export const Report = () => {
                 <ul style={{ marginBottom: '1rem' }}>
                   {selectedRow.vulnerabilitiesData.map((vulnerability, index) => (
                     <li key={index} style={{ marginBottom: '2rem' }}>
-                      <strong>Confidence:</strong> {vulnerability.confidence}<br />
-                      <strong>Description:</strong> {vulnerability.description}<br />
-                      <strong>Impact:</strong> {vulnerability.impact}<br />
-                      <strong>Recommendation:</strong> {vulnerability.recommendation}<br />
-                      <strong>vulnerability type:</strong> {vulnerability.vulnerability_type}<br />
-                      <strong style={{color:'red'}}>Vulnerability Code:</strong><br />
-                      {vulnerability.vulnerability_code.map((code, codeIndex) => (
-                      <ul key={codeIndex}>
-                        <strong>Code desc:</strong> {code.code_desc}<br />
-                        <strong>Location:</strong> {code.location}<br />
-                      </ul>
-                    ))}
+                        <li key={index} style={{ marginBottom: '2rem' }}>
+                          <strong>Confidence:</strong> {vulnerability.confidence}<br />
+                          <strong>Description:</strong> {vulnerability.description}<br />
+                          <strong>Impact:</strong> {vulnerability.impact}<br />
+                          <strong>Recommendation:</strong> {vulnerability.recommendation}<br />
+                          <strong>vulnerability type:</strong> {vulnerability.vulnerability_type}<br />
+                          <strong style={{color:'red'}}>Vulnerability Code:</strong><br />
+                          {vulnerability.vulnerability_code.map((code, codeIndex) => (
+                          <ul key={codeIndex}>
+                            <strong>Code desc:</strong> {code.code_desc}<br />
+                            <strong>Location:</strong> {code.location}<br />
+                          </ul>
+                        ))}
+                        </li>
                     </li>
                   ))}
                 </ul>
               )}
 
               {/* Add a button or any element to close the popup */}
-              <button onClick={handleClose} style={{ background: '#023020', color: 'white', padding: '1rem 3rem', fontSize: '1.rem', marginTop: 'auto' ,borderRadius:'40px' }}>Close</button>
+              <button
+                onClick={handleClose}
+                style={{
+                  background: '#023020',
+                  color: 'white',
+                  padding: '1rem 3rem',
+                  fontSize: '1.rem',
+                  marginTop: 'auto',
+                  borderRadius: '40px',
+                }}
+              >
+                Close
+              </button>
             </div>
           </div>
         )}
-
       </div>
     </Container>
   );
